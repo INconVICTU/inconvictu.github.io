@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aniversariante</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: #000000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    h1 {
+      color: #ffffff;
+    }
+    .message {
+        color: #ffffff;
+      margin-top: 20px;
+    }
+    .slider {
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+    .slider img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .slider img.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Feliz Aniversário, <span id="nome"></span>! 🎉</h1>
+    <div class="message">
+      <p>Idade: <span id="idade"></span></p>
+      <p>Mensagem: <span id="mensagem"></span></p>
+    </div>
+    <div class="slider" id="slider">
+      <!-- Imagens do slide serão carregadas dinamicamente -->
+    </div>
+  </div>
+
+  <script>
+    // Obtém os dados do localStorage
+    const data = JSON.parse(localStorage.getItem('dadosFormulario'));
+
+    // Atualiza as informações na página
+    if (data) {
+      document.getElementById('nome').textContent = data.nome;
+      document.getElementById('idade').textContent = data.idade;
+      document.getElementById('mensagem').textContent = data.mensagem;
+
+      // Array com URLs das imagens (exemplo)
+      const imagens = [
+        '1.png',
+        '2.png',
+        '3.png',
+        '4.png',
+        '5.png'
+      ];
+
+      const slider = document.getElementById('slider');
+
+      // Adiciona imagens ao slider
+      imagens.forEach((url, index) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.classList.add('fade');
+        if (index === 0) {
+          img.classList.add('active');
+        }
+        slider.appendChild(img);
+      });
+
+      // Efeito de fade nas imagens
+      let currentSlide = 0;
+      const slides = slider.querySelectorAll('.fade');
+
+      setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }, 3000); // Troca a cada 2 segundos (2000 milissegundos)
+    }
+  </script>
+</body>
+</html>
